@@ -24,8 +24,8 @@ urlpatterns = [
     path('archivo/',include('Archivo.urls')),
     path('informeAutomatico/',include('InformeAutomatico.urls')),
     path('factura/',include('Factura.urls')),
-    path('Equipo/',include('Equipo.urls')),
-    path('EquipoEmpleado/',include('EquipoEmpleado.urls')),
-    path('EquipoProyecto/',include('EquipoProyecto.urls'))
+    path('equipo/',include('Equipo.urls')),
+    path('equipoEmpleado/',include('EquipoEmpleado.urls')),
+    path('equipoProyecto/',include('EquipoProyecto.urls'))
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,9 +1,37 @@
 from django.http import JsonResponse
 from rest_framework.response import Response
 from .models import Cliente
+from .serializers import ClienteSerializer
 from rest_framework.decorators import api_view
 from django.contrib.auth.hashers import make_password,check_password
 from django.contrib.sessions.models import Session
+from django.shortcuts import get_object_or_404
+
+
+@api_view(['GET'])
+def clienteL(request):
+    if request.method == 'GET':
+        cliente = Cliente.objects.all()
+        serializer = ClienteSerializer(cliente, many=True)
+        return Response(serializer.data)
+
+@api_view(['GET', 'PUT', 'PATCH', 'DELETE'])
+def clienteUD(request, pk):
+    cliente = get_object_or_404(Cliente, pk=pk)
+    if request.method == 'GET':
+        serializer = ClienteSerializer(cliente)
+        return Response(serializer.data)
+    elif request.method in ['PUT', 'PATCH']:
+        serializer = ClienteSerializer(cliente, data=request.data, partial=request.method == 'PATCH')
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors, status=400)
+    elif request.method == 'DELETE':
+        cliente.delete()
+        return Response(status=204)
+
 
 @api_view(['POST'])
 def login_view(request):
